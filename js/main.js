@@ -114,7 +114,7 @@ function changeChunkSize(delta) {
 }
 
 function setupAttributes() {
-	var legend = "[N]: new_____[J]/[F]: +/- WPM_____[H]/[G]: +/- chunk size";
+	var legend = "[N]: new_____[SPACE]: start/pause_____[J]/[F]: +/- WPM_____[H]/[G]: +/- chunk size";
 	legend = legend.replace(/\[/g, '<strong class="label">').replace(/\]/g, '</strong>')
 		.replace(/_/g, '&nbsp;');
 	$('#divLegend').html(legend);
