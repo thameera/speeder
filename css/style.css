@@ -1,0 +1,27 @@
+body {
+	padding-top: 15%;
+}
+
+#txtaInput {
+	width: 97%;
+}
+
+#divCanvas {
+	height: 100px;
+	text-align: center;
+	margin: 25px;
+	font-size: 25px;
+}
+
+.rowInfo {
+	text-align: center;
+}
+
+.divTitle {
+	font-weight: bold;
+}
+
+#divLegend {
+	text-align: center;
+	padding-top: 5%;
+}

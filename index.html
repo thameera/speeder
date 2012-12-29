@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Speeder!</title>
+	<link rel="stylesheet" type="text/css" href="css/style.css">
+	<link href="css/bootstrap.css" rel="stylesheet">
+	<link href="css/bootstrap-responsive.css" rel="stylesheet">
+	<script src="js/jquery.js"></script>
+	<script src="js/jquery.timer.js"></script>
+	<script src="js/SpeederEngine.js"></script>
+	<script src="js/main.js"></script>
+	<script src="js/bootstrap.min.js"></script>
+</head>
+
+<body>
+<div class="container" id="content">
+	<div class="row">
+		<div class="span2"></div>
+		<div class="span8">
+			<div id="divCanvas">sticks and spans
+			</div>
+		</div>
+	</div>
+	<div class="row rowInfo">
+		<div class="span5"></div>
+		<div class="span1">
+			<div class="divTitle">WPM</div>
+			<div id="divWPM"></div>
+		</div>
+		<div class="span1">
+			<div class="divTitle">Chunk</div>
+			<div id="divChunk"></div>
+		</div>
+	</div>
+	<div class="row rowLegend">
+		<div class="span2"></div>
+		<div class="span8" id="divLegend">
+		</div>
+	</div>
+</div> <!-- /container -->
+
+<div id="modalInput" class="modal hide fade" tabindex=-1 role="dialog" aria-labelledby="mdlInputHeader" aria-hidden="true">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
+        <h3 id="mdlInputHeader">Paste the text here:</h3>
+    </div>
+    <div class="modal-body">
+		<textarea class="input-xlarge" id="txtaInput" rows="15"></textarea>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary" id="btnInputDone" data-dismiss="modal" aria-hidden="true">Done</button>
+    </div>
+</div> <!-- modalLessonComplete -->
+
+</body>
+</html>
+
