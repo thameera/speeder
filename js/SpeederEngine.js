@@ -1,3 +1,10 @@
+var EngSTATE = {
+	Initial:	{value: 0, text: 'Initial'},
+	Reading: 	{value: 1, text: 'Reading'},
+	Paused: 	{value: 2, text: 'Paused'},
+	Finished: 	{value: 3, text: 'Finished'},
+};
+
 var Engine = {
 	start:		function() { return EngStart(); },
 	pause:		function() { return EngPause(); },
@@ -9,22 +16,19 @@ var Engine = {
 	setWPM: 	function(wpm) { return EngSetWPM(wpm); }
 };
 
+var _State = EngSTATE.Initial;
 var _WPM;
 var _CPM;
-var _TimeOut;
 var _Text = null;
 var _WordsArray = null;
 var _WordCount;
-var _TimeOut;
 var _TotalTime;
 var _TimerPerChar;
 var _ChunkSize;
-var _Cb;
+var _Cb; 	// Callback function given by outside
 var _Pos = 0;
 var _Timer;
-var _PauseTriggered = 0;
-var _Offset = 0.0;
-var _bReading = 0;
+var _Offset = 0.0;	// Used to slow down on sentence endings
 
 function EngStart() {
 	if (!_Timer) {
@@ -35,19 +39,18 @@ function EngStart() {
 
 	_Pos = 0;
 	_EngSetupParams();
-	_bReading = 1;
+	_State = EngSTATE.Reading;
 
 	_EngOnTimer();
 }
 
 function EngPause() {
-	_PauseTriggered = 1;
+	_State = EngSTATE.Paused;
 	_Timer.stop();
-	_bReading = 0;
 }
 
 function EngResume() {
-	_bReading = 1;
+	_State = EngSTATE.Reading;
 	_EngOnTimer();
 }
 
@@ -60,33 +63,30 @@ function EngSetText(text) {
 }
 
 function _EngSetupParams() {
-	_PauseTriggered = 0;
-
 	if (_Text == null) return;
 
 	var effectiveChars = _Text.length - _WordCount - _Pos;
 	_TotalTime = (effectiveChars / _CPM) * 60 * 1000;
-	//_TimePerChar = _TotalTime / _Text.length;
 	_TimePerChar = _TotalTime / effectiveChars;
 }
 
 function _EngOnTimer() {
-	if (_PauseTriggered == 1) {
-		_PauseTriggered = 0;
-		_Cb(2, "");
+	if (_State == EngSTATE.Paused) {
+		_Cb(_State, "");
 		return;
 	}
 
 	var offset = 0.0;
 	var txt = EngGetNextChunk(0);
 
-	if (txt == "") { //Finished
-		_Cb(0, "");
+	if (txt == "") {
+		_State = EngSTATE.Finished;
+		_Cb(_State, "");
 		_Pos = 0;
 		return;
 	}
 	
-	_Cb(1, txt);
+	_Cb(EngSTATE.Reading, txt);
 	var time4chunk = txt.length * _TimePerChar;
 	_Timer.once(time4chunk + _Offset);
 }

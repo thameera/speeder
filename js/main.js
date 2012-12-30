@@ -14,11 +14,6 @@ var ePrevState = STATE.Empty;
 
 $(document).ready(function(){
 	InitEngine();
-
-    $(document).keypress(function(event){
-        onKeyPress(event);
-    });
-
 	setupAttributes();
 	onNewText();
 });
@@ -61,19 +56,16 @@ function onKeyPress(event) {
 }
 
 function EngineCallback(state, text) {
-	if (state == 0) { // finished
+	if (state == EngSTATE.Finished) {
 		changeState(STATE.Loaded);
 		return;
 	}	
-	else if (state == 2) { // paused
+	else if (state == EngSTATE.Paused) {
 		changeState(STATE.Paused);
 		return;
 	}	
 
 	$('#divCanvas').text(text);
-}
-
-function startReading() {
 }
 
 function InitEngine() {
@@ -114,12 +106,14 @@ function changeChunkSize(delta) {
 }
 
 function setupAttributes() {
+    $(document).keypress(function(event){
+        onKeyPress(event);
+    });
+
 	var legend = "[N]: new_____[SPACE]: start/pause_____[J]/[F]: +/- WPM_____[H]/[G]: +/- chunk size";
 	legend = legend.replace(/\[/g, '<strong class="label">').replace(/\]/g, '</strong>')
 		.replace(/_/g, '&nbsp;');
 	$('#divLegend').html(legend);
-
-	var mod = $('#modalInput');
 
 	$('#btnInputDone').click(function(event){
 		if (eState != STATE.Modal) return;
@@ -127,6 +121,8 @@ function setupAttributes() {
 	});
 
 	$('#txtaInput').val("Once the quietness arrived, it stayed and spread in Estha. It reached out of his head and enfolded him in its swampy arms. It rocked him to the rhythm of an ancient, fetal heartbeat. It sent its stealthy, suckered tentacles inching along the insides of his skull, hoovering the knolls and dells of his memory; dislodging old sentences, whisking them off the tip of his tongue.");
+
+	var mod = $('#modalInput');
 
 	mod.on('shown', function() {
 		$('#txtaInput').select().focus();
@@ -140,5 +136,3 @@ function changeState(state) {
 	eState = state;
 }
 
-function setCanvasToDefaults() {
-}
