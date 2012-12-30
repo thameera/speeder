@@ -45,6 +45,9 @@ function EngStart() {
 }
 
 function EngPause() {
+	if (_State != EngSTATE.Reading)
+		return;
+
 	_State = EngSTATE.Paused;
 	_Timer.stop();
 }

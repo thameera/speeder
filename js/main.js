@@ -8,6 +8,7 @@ var STATE = {
 
 var wpm;
 var chunk;
+var txt;
 
 var eState = STATE.Empty;
 var ePrevState = STATE.Empty;
@@ -24,6 +25,7 @@ function onKeyPress(event) {
 	if (eState == STATE.Modal) return;
 
 	if (k == 78 || k == 110) { // N pressed
+		Engine.pause();
 		$('#txtaInput').focus();
 		changeState(STATE.Modal);
 		$('#modalInput').modal('show');
@@ -55,6 +57,16 @@ function onKeyPress(event) {
 	}
 }
 
+function onKeyDown(e) {
+	if (eState == STATE.Modal) {
+		if (e.ctrlKey && e.keyCode == 13) { // Ctrl+Enter
+			$('#modalInput').modal('hide');
+			onNewText();
+		}
+	}
+}
+
+
 function EngineCallback(state, text) {
 	if (state == EngSTATE.Finished) {
 		changeState(STATE.Loaded);
@@ -78,7 +90,8 @@ function InitEngine() {
 }
 
 function onNewText() {
-	var res = Engine.setText($.trim($('#txtaInput').val()));
+	txt = $.trim($('#txtaInput').val());
+	var res = Engine.setText(txt);
 
 	if (res > 0) {
 		changeState(STATE.Loaded);
@@ -106,33 +119,35 @@ function changeChunkSize(delta) {
 }
 
 function setupAttributes() {
-    $(document).keypress(function(event){
-        onKeyPress(event);
-    });
+	$(document).keypress(function(e){
+		onKeyPress(e);
+	}).keydown(function(e){
+		onKeyDown(e);
+	});
 
 	var legend = "[N]: new_____[SPACE]: start/pause_____[J]/[F]: +/- WPM_____[H]/[G]: +/- chunk size";
-	legend = legend.replace(/\[/g, '<strong class="label">').replace(/\]/g, '</strong>')
-		.replace(/_/g, '&nbsp;');
-	$('#divLegend').html(legend);
-
-	$('#btnInputDone').click(function(event){
-		if (eState != STATE.Modal) return;
-		onNewText();
-	});
+	$('#divLegend').html(formatLegend(legend));
 
 	$('#txtaInput').val("Once the quietness arrived, it stayed and spread in Estha. It reached out of his head and enfolded him in its swampy arms. It rocked him to the rhythm of an ancient, fetal heartbeat. It sent its stealthy, suckered tentacles inching along the insides of his skull, hoovering the knolls and dells of his memory; dislodging old sentences, whisking them off the tip of his tongue.");
 
 	var mod = $('#modalInput');
 
 	mod.on('shown', function() {
-		$('#txtaInput').select().focus();
+		$('#txtaInput').val(txt).select().focus();
 	}).on('hidden', function() {
 		if (eState == STATE.Modal) changeState(ePrevState);
 	});
+
+	$('#modalLegend').html(formatLegend("[Ctrl]+[ENTER]: Use this text_____[ESC]: Cancel"));
 }
 
 function changeState(state) {
 	ePrevState = eState;
 	eState = state;
+}
+
+function formatLegend(str) {
+	return str.replace(/\[/g, '<strong class="label">').replace(/\]/g, '</strong>')
+		.replace(/_/g, '&nbsp;');
 }
 
