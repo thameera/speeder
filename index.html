@@ -48,9 +48,39 @@
 		<textarea class="input-xlarge" id="txtaInput" rows="15"></textarea>
 	</div>
 	<div class="modal-footer" style="text-align: center">
-		<div id="modalLegend"></div>
+		<div id="modalInputLegend"></div>
 	</div>
-</div> <!-- modalInput  -->
+</div> <!-- /modalInput  -->
+
+<div id="modalOptions" class="modal hide fade" tabindex=-1 role="dialog" aria-labelledby="mdlOptionsHeader" aria-hidden="true">
+	<div class="modal-header">
+		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
+		<h3 id="mdlOptionsHeader">Options</h3>
+	</div>
+	<div class="modal-body">
+		<div class="block">
+			<div class="title">Speed</div>
+			<div class="option">
+				<abbr title="Words per Minute">WPM</abbr>: 
+				<input type="text" id="optionsWPM" />
+			</div>
+			<div class="option">
+				<abbr title="By how much WPM is changed when you press J/F">Delta</abbr>: 
+				<input type="text" id="optionsDelta" />
+			</div>
+		</div> <!-- /block -->
+		<div class="block">
+			<div class="title">Chunk</div>
+			<div class="option">
+				<abbr title="Words per chunk">Size</abbr>: 
+				<input type="text" id="optionsChunkSize" />
+			</div>
+		</div> <!-- /block -->
+	</div> <!-- /modal-body -->
+	<div class="modal-footer" style="text-align: center">
+		<div id="modalOptionsLegend"></div>
+	</div>
+</div> <!-- /modalOptions  -->
 
 </body>
 </html>

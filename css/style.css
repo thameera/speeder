@@ -8,6 +8,7 @@ body {
 
 #divCanvas {
 	height: 100px;
+	padding-top: 20px;
 	text-align: center;
 	margin: 25px;
 	font-size: 25px;
@@ -25,3 +26,22 @@ body {
 	text-align: center;
 	padding-top: 5%;
 }
+
+#modalOptions .title {
+	clear: both;
+	font-weight: bold;
+	font-size: 120%;
+}
+
+#modalOptions .option {
+	height: 50px;
+	width: 200px;
+	float: left;
+}
+
+#modalOptions input {
+	height: 20px;
+	width: 50px;
+	margin-top: 7px;
+}
+

@@ -15,5 +15,4 @@ The engine is js/SpeederEngine.js. The js/main.js script plugs the engine to the
  * Grab content from URL (in addition to copy-pasting)
  * Enhance UI
  * Save settings in local storage
- * An Options panel
 
