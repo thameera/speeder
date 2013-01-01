@@ -14,6 +14,7 @@ var Engine = {
 	setCallback:	function(callback) { return EngSetCallback(callback); },
 	setText: 	function(text) { return EngSetText(text); },
 	setChunk: 	function(size) { return EngSetChunkSize(size); },
+	setChunkLen: 	function(size) { return EngSetChunkLen(size); },
 	setWPM: 	function(wpm) { return EngSetWPM(wpm); }
 };
 
@@ -26,6 +27,7 @@ var _WordCount;
 var _TotalTime;
 var _TimePerChar;
 var _ChunkSize;
+var _ChunkLen;
 var _Cb; 	// Callback function given by outside
 var _Pos = 0;
 var _Timer;
@@ -108,6 +110,8 @@ function EngGetNextChunk(mode) {
 	for (var i = 0; i < _ChunkSize; i++) {
 		if (_Pos > _WordCount - 1) break;
 
+		if (_ChunkLen > 0 && (txt + _WordsArray[_Pos]).length > _ChunkLen) break;
+
 		txt += _WordsArray[_Pos++];
 		
 		var x = txt.substr(-1);
@@ -133,6 +137,10 @@ function EngSetWPM(wpm) {
 
 function EngSetChunkSize(size) {
 	_ChunkSize = size;	
+}
+
+function EngSetChunkLen(len) {
+	_ChunkLen = len;	
 }
 
 function EngSetCallback(callback) {

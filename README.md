@@ -10,7 +10,6 @@ The engine is js/SpeederEngine.js. The js/main.js script plugs the engine to the
 
 ## To-do
 
- * *Max characters per chunk* option
  * Reading progress indicator
  * Grab readable content from URL (in addition to copy-pasting)
  * Enhance UI

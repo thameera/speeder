@@ -9,6 +9,7 @@ var STATE = {
 
 var wpm = 600;
 var chunk = 3;
+var chunkLen = 25;
 var txt;
 var wpmdelta = 10;
 var canStore = 0;
@@ -131,6 +132,7 @@ function onChangeOptions() {
 	changeWPM(0);
 	wpmdelta = parseInt($('#optionsDelta').val()) || wpmdelta;
 	chunk = parseInt($('#optionsChunkSize').val()) || chunk;
+	chunkLen = parseInt($('#optionsChunkLen').val()) || 0;
 	changeChunkSize(0);
 	saveState();
 }
@@ -149,6 +151,7 @@ function changeChunkSize(delta) {
 
 	chunk += delta;
 	Engine.setChunk(chunk);
+	Engine.setChunkLen(chunkLen);
 	saveState();
 	$('#divChunk').text(chunk);
 }
@@ -160,7 +163,7 @@ function setupAttributes() {
 		onKeyDown(e);
 	});
 
-	var legend = "[N]: new_____[SPACE]: start/pause_____[R]: Restart_____[J]/[F]: +/- WPM_____[H]/[G]: +/- chunk size_____[O]: options";
+	var legend = "[N]: New_____[SPACE]: Start/Pause_____[R]: Restart_____[J]/[F]: +/- WPM_____[H]/[G]: +/- Chunk size_____[O]: Options";
 	$('#divLegend').html(formatLegend(legend));
 
 	$('#txtaInput').val("Once the quietness arrived, it stayed and spread in Estha. It reached out of his head and enfolded him in its swampy arms. It rocked him to the rhythm of an ancient, fetal heartbeat. It sent its stealthy, suckered tentacles inching along the insides of his skull, hoovering the knolls and dells of his memory; dislodging old sentences, whisking them off the tip of his tongue.");
@@ -179,6 +182,7 @@ function setupAttributes() {
 		$('#optionsWPM').val(wpm).select().focus();
 		$('#optionsDelta').val(wpmdelta);
 		$('#optionsChunkSize').val(chunk);
+		$('#optionsChunkLen').val(chunkLen);
 	}).on('hidden', function() {
 		if (eState == STATE.Options) changeState(ePrevState);
 	});
@@ -225,24 +229,25 @@ function saveState() {
 	localStorage["spdWPM"] = wpm;
 	localStorage["spdDelta"] = wpmdelta;
 	localStorage["spdChunk"] = chunk;
+	localStorage["spdChunkLen"] = chunkLen;
 }
 
 function loadState() {
 	if (!canStore) return;
 
-	if (localStorage.getItem("spdWPM") != null) {
-		wpm = parseInt(localStorage["spdWPM"]);
-		wpmdelta = parseInt(localStorage["spdDelta"]);
-		chunk = parseInt(localStorage["spdChunk"]);
+	(localStorage.getItem("spdWPM") != null) && (wpm = parseInt(localStorage["spdWPM"]));
+	(localStorage.getItem("spdDelta") != null) && (wpmdelta = parseInt(localStorage["spdDelta"]));
+	(localStorage.getItem("spdChunk") != null) && (chunk = parseInt(localStorage["spdChunk"]));
+	(localStorage.getItem("spdChunkLen") != null) && (chunkLen = parseInt(localStorage["spdChunkLen"]));
 
-		changeWPM(0);
-		changeChunkSize(0);
-	}
+	changeWPM(0);
+	changeChunkSize(0);
 }
 
 function resetOptionsToDefaults() {
 	$('#optionsWPM').val(600).select().focus();
 	$('#optionsDelta').val(10);
 	$('#optionsChunkSize').val(3);
+	$('#optionsChunkLen').val(25);
 }
 
