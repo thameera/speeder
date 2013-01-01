@@ -24,7 +24,7 @@ var _Text = null;
 var _WordsArray = null;
 var _WordCount;
 var _TotalTime;
-var _TimerPerChar;
+var _TimePerChar;
 var _ChunkSize;
 var _Cb; 	// Callback function given by outside
 var _Pos = 0;

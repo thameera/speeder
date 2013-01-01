@@ -7,15 +7,19 @@ var STATE = {
 	Options:	{value: 5, text: 'Options'} 
 };
 
-var wpm;
-var chunk;
+var wpm = 600;
+var chunk = 3;
 var txt;
 var wpmdelta = 10;
+var canStore = 0;
 
 var eState = STATE.Empty;
 var ePrevState = STATE.Empty;
 
 $(document).ready(function(){
+	checkLocalStorageSupport();
+	loadState();
+
 	InitEngine();
 	setupAttributes();
 	onNewText();
@@ -70,16 +74,20 @@ function onKeyPress(event) {
 }
 
 function onKeyDown(e) {
+	var k = e.keyCode;
 	if (eState == STATE.Modal) {
-		if (e.ctrlKey && e.keyCode == 13) { // Ctrl+Enter
+		if (e.ctrlKey && k == 13) { // Ctrl+Enter
 			$('#modalInput').modal('hide');
 			onNewText();
 		}
 	}
 	else if (eState == STATE.Options) {
-		if (e.ctrlKey && e.keyCode == 13) { // Ctrl+Enter
+		if (e.ctrlKey && k == 13) { // Ctrl+Enter
 			$('#modalOptions').modal('hide');
 			onChangeOptions();
+		}
+		else if (k == 68 || k == 100) { // D pressed
+			resetOptionsToDefaults();
 		}
 	}
 }
@@ -99,9 +107,6 @@ function EngineCallback(state, text) {
 }
 
 function InitEngine() {
-	wpm = 600;
-	chunk = 3;
-
 	changeWPM(0);
 	changeChunkSize(0);
 	Engine.setCallback(EngineCallback);
@@ -127,6 +132,7 @@ function onChangeOptions() {
 	wpmdelta = parseInt($('#optionsDelta').val()) || wpmdelta;
 	chunk = parseInt($('#optionsChunkSize').val()) || chunk;
 	changeChunkSize(0);
+	saveState();
 }
 
 function changeWPM(delta) {
@@ -134,6 +140,7 @@ function changeWPM(delta) {
 
 	wpm += delta;
 	Engine.setWPM(wpm);
+	saveState();
 	$('#divWPM').text(wpm);
 }
 
@@ -142,6 +149,7 @@ function changeChunkSize(delta) {
 
 	chunk += delta;
 	Engine.setChunk(chunk);
+	saveState();
 	$('#divChunk').text(chunk);
 }
 
@@ -179,7 +187,7 @@ function setupAttributes() {
 		validateNumber(e);
 	});
 
-	$('#modalOptionsLegend').html(formatLegend("[Ctrl]+[ENTER]: Save_____[ESC]: Cancel"));
+	$('#modalOptionsLegend').html(formatLegend("[Ctrl]+[ENTER]: Save_____[D]: Defaults_____[ESC]: Cancel"));
 }
 
 function changeState(state) {
@@ -201,5 +209,40 @@ function validateNumber(ev) {
 		theEvent.returnValue = false;
 		if(theEvent.preventDefault) theEvent.preventDefault();
 	}
+}
+
+function checkLocalStorageSupport() {
+	try {
+		canStore = 'localStorage' in window && window['localStorage'] !== null;
+	} catch (e) {
+		canStore = 0;
+	}
+}
+
+function saveState() {
+	if (!canStore) return;
+
+	localStorage["spdWPM"] = wpm;
+	localStorage["spdDelta"] = wpmdelta;
+	localStorage["spdChunk"] = chunk;
+}
+
+function loadState() {
+	if (!canStore) return;
+
+	if (localStorage.getItem("spdWPM") != null) {
+		wpm = parseInt(localStorage["spdWPM"]);
+		wpmdelta = parseInt(localStorage["spdDelta"]);
+		chunk = parseInt(localStorage["spdChunk"]);
+
+		changeWPM(0);
+		changeChunkSize(0);
+	}
+}
+
+function resetOptionsToDefaults() {
+	$('#optionsWPM').val(600).select().focus();
+	$('#optionsDelta').val(10);
+	$('#optionsChunkSize').val(3);
 }
 
