@@ -38,6 +38,10 @@ function onKeyPress(event) {
 		changeState(STATE.Options);
 		$('#modalOptions').modal('show');
 	}
+	else if (k == 82 || k == 114) { // R pressed
+		Engine.reset();
+		$('#divCanvas').text(Engine.getNextChunk());
+	}
 	else if (k == 32) { // Space pressed
 		if (eState == STATE.Loaded) {
 			changeState(STATE.Reading);
@@ -148,7 +152,7 @@ function setupAttributes() {
 		onKeyDown(e);
 	});
 
-	var legend = "[N]: new_____[SPACE]: start/pause_____[J]/[F]: +/- WPM_____[H]/[G]: +/- chunk size_____[O]: options";
+	var legend = "[N]: new_____[SPACE]: start/pause_____[R]: Restart_____[J]/[F]: +/- WPM_____[H]/[G]: +/- chunk size_____[O]: options";
 	$('#divLegend').html(formatLegend(legend));
 
 	$('#txtaInput').val("Once the quietness arrived, it stayed and spread in Estha. It reached out of his head and enfolded him in its swampy arms. It rocked him to the rhythm of an ancient, fetal heartbeat. It sent its stealthy, suckered tentacles inching along the insides of his skull, hoovering the knolls and dells of his memory; dislodging old sentences, whisking them off the tip of his tongue.");

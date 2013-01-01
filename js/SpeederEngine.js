@@ -9,6 +9,7 @@ var Engine = {
 	start:		function() { return EngStart(); },
 	pause:		function() { return EngPause(); },
 	resume:		function() { return EngResume(); },
+	reset:		function() { return EngReset(); },
 	getNextChunk:	function() { return EngGetNextChunk(1); },
 	setCallback:	function(callback) { return EngSetCallback(callback); },
 	setText: 	function(text) { return EngSetText(text); },
@@ -55,6 +56,11 @@ function EngPause() {
 function EngResume() {
 	_State = EngSTATE.Reading;
 	_EngOnTimer();
+}
+
+function EngReset() {
+	_Timer.stop();
+	_Pos = 0;
 }
 
 function EngSetText(text) {
