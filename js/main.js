@@ -7,11 +7,11 @@ var STATE = {
 	Options:	{value: 5, text: 'Options'} 
 };
 
-var wpm = 600;
+var wpm = 300;
 var chunk = 3;
-var chunkLen = 25;
+var chunkLen = 20;
 var txt;
-var wpmdelta = 10;
+var wpmdelta = 50;
 var canStore = 0;
 
 var eState = STATE.Empty;
@@ -166,7 +166,7 @@ function setupAttributes() {
 	var legend = "[N]: New_____[SPACE]: Start/Pause_____[R]: Restart_____[J]/[F]: +/- WPM_____[H]/[G]: +/- Chunk size_____[O]: Options";
 	$('#divLegend').html(formatLegend(legend));
 
-	$('#txtaInput').val("Once the quietness arrived, it stayed and spread in Estha. It reached out of his head and enfolded him in its swampy arms. It rocked him to the rhythm of an ancient, fetal heartbeat. It sent its stealthy, suckered tentacles inching along the insides of his skull, hoovering the knolls and dells of his memory; dislodging old sentences, whisking them off the tip of his tongue.");
+	$('#txtaInput').val("It was terribly cold and nearly dark on the last evening of the old year, and the snow was falling fast. In the cold and the darkness, a poor little girl, with bare head and naked feet, roamed through the streets. It is true she had on a pair of slippers when she left home, but they were not of much use. ");
 
 	var mod = $('#modalInput');
 
@@ -245,9 +245,9 @@ function loadState() {
 }
 
 function resetOptionsToDefaults() {
-	$('#optionsWPM').val(600).select().focus();
-	$('#optionsDelta').val(10);
+	$('#optionsWPM').val(300).select().focus();
+	$('#optionsDelta').val(50);
 	$('#optionsChunkSize').val(3);
-	$('#optionsChunkLen').val(25);
+	$('#optionsChunkLen').val(20);
 }
 

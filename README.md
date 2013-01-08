@@ -1,6 +1,7 @@
 # speeder
 
 Speeder is a speed reading engine in Javascript. 
+A live version is available at http://thameera.com/speeder
 
 ## How it works
 
@@ -12,6 +13,6 @@ The engine is js/SpeederEngine.js. The js/main.js script plugs the engine to the
 
  * Reading progress indicator
  * Grab readable content from URL (in addition to copy-pasting)
- * Enhance UI
+ * Dim background while reading
  * Option to save *text* in local storage
 
