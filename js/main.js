@@ -3,7 +3,7 @@ var STATE = {
 	Loaded: 	{value: 1, text: 'Loaded'},
 	Reading: 	{value: 2, text: 'Reading'},
 	Paused: 	{value: 3, text: 'Paused'},
-	Modal:		{value: 4, text: 'Modal'}, 
+	NewModal:	{value: 4, text: 'NewModal'}, 
 	Options:	{value: 5, text: 'Options'} 
 };
 
@@ -12,7 +12,8 @@ var chunk = 3;
 var chunkLen = 20;
 var txt;
 var wpmdelta = 50;
-var canStore = 0;
+var canStore = 0; // 1 if local storage is available
+var hideMode = 1; // whether the extra divs should be hidden while reading
 
 var eState = STATE.Empty;
 var ePrevState = STATE.Empty;
@@ -29,12 +30,12 @@ $(document).ready(function(){
 function onKeyPress(event) {
 	var k = (event.keyCode ? event.keyCode : event.which);
 
-	if (eState == STATE.Modal || eState == STATE.Options) return;
+	if (eState == STATE.NewModal || eState == STATE.Options) return;
 
 	if (k == 78 || k == 110) { // N pressed
 		Engine.pause();
 		$('#txtaInput').focus();
-		changeState(STATE.Modal);
+		changeState(STATE.NewModal);
 		$('#modalInput').modal('show');
 	}
 	else if (k == 79 || k == 111) { // O pressed
@@ -76,7 +77,7 @@ function onKeyPress(event) {
 
 function onKeyDown(e) {
 	var k = e.keyCode;
-	if (eState == STATE.Modal) {
+	if (eState == STATE.NewModal) {
 		if (e.ctrlKey && k == 13) { // Ctrl+Enter
 			$('#modalInput').modal('hide');
 			onNewText();
@@ -133,6 +134,7 @@ function onChangeOptions() {
 	wpmdelta = parseInt($('#optionsDelta').val()) || wpmdelta;
 	chunk = parseInt($('#optionsChunkSize').val()) || chunk;
 	chunkLen = parseInt($('#optionsChunkLen').val()) || 0;
+	$('#option-hidenoise').hasClass('active') ? hideMode = 1 : hideMode = 0;
 	changeChunkSize(0);
 	saveState();
 }
@@ -173,7 +175,7 @@ function setupAttributes() {
 	mod.on('shown', function() {
 		$('#txtaInput').val(txt).select().focus();
 	}).on('hidden', function() {
-		if (eState == STATE.Modal) changeState(ePrevState);
+		if (eState == STATE.NewModal) changeState(ePrevState);
 	});
 
 	$('#modalInputLegend').html(formatLegend("[Ctrl]+[ENTER]: Use this text_____[ESC]: Cancel"));
@@ -183,6 +185,7 @@ function setupAttributes() {
 		$('#optionsDelta').val(wpmdelta);
 		$('#optionsChunkSize').val(chunk);
 		$('#optionsChunkLen').val(chunkLen);
+		hideMode == 1 && $('#option-hidenoise').addClass('active');
 	}).on('hidden', function() {
 		if (eState == STATE.Options) changeState(ePrevState);
 	});
@@ -197,6 +200,8 @@ function setupAttributes() {
 function changeState(state) {
 	ePrevState = eState;
 	eState = state;
+
+	takeStateBasedActions();
 }
 
 function formatLegend(str) {
@@ -230,6 +235,7 @@ function saveState() {
 	localStorage["spdDelta"] = wpmdelta;
 	localStorage["spdChunk"] = chunk;
 	localStorage["spdChunkLen"] = chunkLen;
+	localStorage["hideMode"] = hideMode;
 }
 
 function loadState() {
@@ -239,6 +245,7 @@ function loadState() {
 	(localStorage.getItem("spdDelta") != null) && (wpmdelta = parseInt(localStorage["spdDelta"]));
 	(localStorage.getItem("spdChunk") != null) && (chunk = parseInt(localStorage["spdChunk"]));
 	(localStorage.getItem("spdChunkLen") != null) && (chunkLen = parseInt(localStorage["spdChunkLen"]));
+	(localStorage.getItem("hideMode") != null) && (hideMode = parseInt(localStorage["hideMode"]));
 
 	changeWPM(0);
 	changeChunkSize(0);
@@ -251,3 +258,21 @@ function resetOptionsToDefaults() {
 	$('#optionsChunkLen').val(20);
 }
 
+function hideNoise() {
+	$('a, .rowInfo, .rowLegend').fadeOut();
+}
+
+function showNoise() {
+	$('a, .rowInfo, .rowLegend').fadeIn();
+}
+
+function takeStateBasedActions() {
+	if (hideMode == 1) {
+		if (eState == STATE.Reading) {
+			hideNoise();
+		}
+		else {
+			showNoise();
+		}
+	}
+}

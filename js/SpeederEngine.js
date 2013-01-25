@@ -110,7 +110,7 @@ function EngGetNextChunk(mode) {
 	for (var i = 0; i < _ChunkSize; i++) {
 		if (_Pos > _WordCount - 1) break;
 
-		if (_ChunkLen > 0 && (txt + _WordsArray[_Pos]).length > _ChunkLen) break;
+		if (_ChunkLen > 0 && (txt + _WordsArray[_Pos]).length > _ChunkLen && i > 0) break;
 
 		txt += _WordsArray[_Pos++];
 		
@@ -118,7 +118,7 @@ function EngGetNextChunk(mode) {
 		if (x == '.' || x == ';') {
 			_Offset = 10 * _TimePerChar; // May need fixing
 			break;
-		}	
+		}
 		txt += " ";
 	}
 

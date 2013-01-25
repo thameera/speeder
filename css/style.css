@@ -35,13 +35,24 @@ body {
 
 #modalOptions .option {
 	height: 50px;
-	width: 200px;
 	float: left;
 }
 
-#modalOptions input {
+#modalOptions .option.half {
+	width: 200px;
+}
+
+#modalOptions .textinput {
 	height: 20px;
 	width: 50px;
 	margin-top: 7px;
+}
+
+#modalOptions .btn{
+	height: 6px;
+}
+
+#modalOptions .btn.active {
+	background-color: lightgreen;
 }
 
