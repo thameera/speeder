@@ -32,6 +32,7 @@ var _Cb; 	// Callback function given by outside
 var _Pos = 0;
 var _Timer;
 var _Offset = 0.0;	// Used to slow down on sentence endings
+var _paraBreak = String.fromCharCode(6);
 
 function EngStart() {
 	if (!_Timer) {
@@ -66,7 +67,7 @@ function EngReset() {
 }
 
 function EngSetText(text) {
-	_Text = text;
+	_Text = text.replace(/\n+/g, _paraBreak);
 	_WordsArray = _Text.split(/\s+/);
 	_WordCount = _WordsArray.length;
 	_Pos = 0;
@@ -115,8 +116,13 @@ function EngGetNextChunk(mode) {
 		txt += _WordsArray[_Pos++];
 		
 		var x = txt.substr(-1);
-		if (x == '.' || x == ';') {
-			_Offset = 10 * _TimePerChar; // May need fixing
+		if (x == _paraBreak) { // Paragraph break
+			txt = txt.replace(_paraBreak, '');
+			_Offset = 25 * _TimePerChar;
+			break;
+		}
+		else if (/[\.;!\?,’]/.test(x)) { // Sentence end
+			_Offset = 15 * _TimePerChar;
 			break;
 		}
 		txt += " ";
