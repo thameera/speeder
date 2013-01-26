@@ -37,13 +37,14 @@ body {
 	font-size: 120%;
 }
 
-#modalOptions .option {
-	height: 50px;
+#modalOptions .option.half {
 	float: left;
+	height: 50px;
+	width: 200px;
 }
 
-#modalOptions .option.half {
-	width: 200px;
+#modalOptions .option.full {
+	clear: both;
 }
 
 #modalOptions .textinput {

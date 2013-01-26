@@ -13,7 +13,9 @@ var chunkLen = 20;
 var txt;
 var wpmdelta = 50;
 var canStore = 0; // 1 if local storage is available
+var storageEnabled = 1; // 0 if local storage is turned off manually
 var hideMode = 1; // whether the extra divs should be hidden while reading
+var defaultText;
 
 var eState = STATE.Empty;
 var ePrevState = STATE.Empty;
@@ -124,6 +126,9 @@ function onNewText() {
 		changeState(STATE.Empty);
 	}
 
+	if (canStore && storageEnabled) {
+		localStorage["txt"] = txt;
+	}
 	$('#divCanvas').text(Engine.getNextChunk());
 }
 
@@ -135,6 +140,7 @@ function onChangeOptions() {
 	chunk = parseInt($('#optionsChunkSize').val()) || chunk;
 	chunkLen = parseInt($('#optionsChunkLen').val()) || 0;
 	$('#option-hidenoise').hasClass('active') ? hideMode = 1 : hideMode = 0;
+	$('#option-localstorage').hasClass('active') ? setStorageOpts(1) : setStorageOpts(0);
 	changeChunkSize(0);
 	saveState();
 }
@@ -168,7 +174,14 @@ function setupAttributes() {
 	var legend = "[N]: New_____[SPACE]: Start/Pause_____[R]: Restart_____[J]/[F]: +/- WPM_____[H]/[G]: +/- Chunk size_____[O]: Options";
 	$('#divLegend').html(formatLegend(legend));
 
-	$('#txtaInput').val("It was terribly cold and nearly dark on the last evening of the old year, and the snow was falling fast. In the cold and the darkness, a poor little girl, with bare head and naked feet, roamed through the streets. It is true she had on a pair of slippers when she left home, but they were not of much use. ");
+	defaultText = "It was terribly cold and nearly dark on the last evening of the old year, and the snow was falling fast. In the cold and the darkness, a poor little girl, with bare head and naked feet, roamed through the streets. It is true she had on a pair of slippers when she left home, but they were not of much use.";
+
+	if (canStore && storageEnabled && localStorage.getItem("txt") != null) {
+		$('#txtaInput').val(localStorage["txt"]);
+	}
+	else {
+		$('#txtaInput').val(defaultText);
+	}
 
 	var mod = $('#modalInput');
 
@@ -191,6 +204,7 @@ function setupAttributes() {
 		$('#optionsChunkSize').val(chunk);
 		$('#optionsChunkLen').val(chunkLen);
 		hideMode == 1 && $('#option-hidenoise').addClass('active');
+		storageEnabled == 1 && $('#option-localstorage').addClass('active');
 	}).on('hidden', function() {
 		if (eState == STATE.Options) changeState(ePrevState);
 	});
@@ -234,7 +248,7 @@ function checkLocalStorageSupport() {
 }
 
 function saveState() {
-	if (!canStore) return;
+	if (!canStore || !storageEnabled) return;
 
 	localStorage["spdWPM"] = wpm;
 	localStorage["spdDelta"] = wpmdelta;
@@ -246,6 +260,10 @@ function saveState() {
 function loadState() {
 	if (!canStore) return;
 
+	(localStorage.getItem("spdWPM") != null) && (storageEnabled = parseInt(localStorage["storage"]));
+	
+	if (!storageEnabled) return;
+
 	(localStorage.getItem("spdWPM") != null) && (wpm = parseInt(localStorage["spdWPM"]));
 	(localStorage.getItem("spdDelta") != null) && (wpmdelta = parseInt(localStorage["spdDelta"]));
 	(localStorage.getItem("spdChunk") != null) && (chunk = parseInt(localStorage["spdChunk"]));
@@ -254,6 +272,13 @@ function loadState() {
 
 	changeWPM(0);
 	changeChunkSize(0);
+}
+
+function setStorageOpts(val) {
+	if (!canStore) return;
+
+	storageEnabled = val;
+	localStorage["storage"] = val;
 }
 
 function resetOptionsToDefaults() {
