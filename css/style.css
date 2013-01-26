@@ -6,6 +6,10 @@ body {
 	width: 97%;
 }
 
+#modalInputWC {
+	text-align: center;
+}
+
 #divCanvas {
 	height: 100px;
 	padding-top: 20px;

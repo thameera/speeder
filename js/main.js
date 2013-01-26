@@ -180,6 +180,11 @@ function setupAttributes() {
 
 	$('#modalInputLegend').html(formatLegend("[Ctrl]+[ENTER]: Use this text_____[ESC]: Cancel"));
 
+	$('#txtaInput').live('input select', function(){
+		var wc = $.trim($('#txtaInput').val()).length / 5;
+		$('#modalInputWC').text('That\'s roughly ' + parseInt(wc) + ' words');
+	});
+
 	$('#modalOptions').on('shown', function() {
 		$('#optionsWPM').val(wpm).select().focus();
 		$('#optionsDelta').val(wpmdelta);
