@@ -54,10 +54,16 @@ body {
 }
 
 #modalOptions .btn{
-	height: 6px;
+	height: 15px;
+	width: 15px;
+	padding: 0px;
+	-moz-border-radius: 15px;
+	-webkit-border-radius: 15px;
+	border: 0px;
+	background-color: cadetblue;
 }
 
 #modalOptions .btn.active {
-	background-color: lightgreen;
+	background-color: darkseagreen;
 }
 
