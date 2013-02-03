@@ -77,8 +77,9 @@ function onKeyPress(event) {
 	}
 }
 
-function onKeyDown(e) {
-	var k = e.keyCode;
+function onKeyUp(e) {
+	var k = (e.keyCode ? e.keyCode : e.which);
+
 	if (eState == STATE.NewModal) {
 		if (e.ctrlKey && k == 13) { // Ctrl+Enter
 			$('#modalInput').modal('hide');
@@ -94,8 +95,12 @@ function onKeyDown(e) {
 			resetOptionsToDefaults();
 		}
 	}
+	else if (eState == STATE.Reading) {
+		if (k == 27) { // Esc pressed
+			Engine.pause();
+		}
+	}
 }
-
 
 function EngineCallback(state, text) {
 	if (state == EngSTATE.Finished) {
@@ -167,8 +172,8 @@ function changeChunkSize(delta) {
 function setupAttributes() {
 	$(document).keypress(function(e){
 		onKeyPress(e);
-	}).keydown(function(e){
-		onKeyDown(e);
+	}).keyup(function(e){
+		onKeyUp(e);
 	});
 
 	var legend = "[N]: New_____[SPACE]: Start/Pause_____[R]: Restart_____[J]/[F]: +/- WPM_____[H]/[G]: +/- Chunk size_____[O]: Options";
