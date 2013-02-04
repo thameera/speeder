@@ -12,6 +12,8 @@ var chunk = 3;
 var chunkLen = 20;
 var txt;
 var wpmdelta = 50;
+var skipbackWords = 10;
+var skipEnabled = 1;
 var canStore = 0; // 1 if local storage is available
 var storageEnabled = 1; // 0 if local storage is turned off manually
 var hideMode = 1; // whether the extra divs should be hidden while reading
@@ -75,9 +77,14 @@ function onKeyPress(event) {
 	else if (k == 74 || k == 106) { // J pressed
 		changeWPM(wpmdelta);
 	}
+	else if (k == 65 || k == 97) { // A pressed
+		if (skipEnabled) {
+			Engine.rewind(skipbackWords);
+		}
+	}
 }
 
-function onKeyUp(e) {
+function onKeyDown(e) {
 	var k = (e.keyCode ? e.keyCode : e.which);
 
 	if (eState == STATE.NewModal) {
@@ -146,6 +153,8 @@ function onChangeOptions() {
 	chunkLen = parseInt($('#optionsChunkLen').val()) || 0;
 	$('#option-hidenoise').hasClass('active') ? hideMode = 1 : hideMode = 0;
 	$('#option-localstorage').hasClass('active') ? setStorageOpts(1) : setStorageOpts(0);
+	$('#option-enableskipback').hasClass('active') ? skipEnabled = 1 : skipEnabled = 0;
+	skipbackWords= parseInt($('#optionsSkipBackWords').val()) || skipbackWords;
 	changeChunkSize(0);
 	saveState();
 }
@@ -172,8 +181,8 @@ function changeChunkSize(delta) {
 function setupAttributes() {
 	$(document).keypress(function(e){
 		onKeyPress(e);
-	}).keyup(function(e){
-		onKeyUp(e);
+	}).keydown(function(e){
+		onKeyDown(e);
 	});
 
 	var legend = "[N]: New_____[SPACE]: Start/Pause_____[R]: Restart_____[J]/[F]: +/- WPM_____[H]/[G]: +/- Chunk size_____[O]: Options";
@@ -210,6 +219,8 @@ function setupAttributes() {
 		$('#optionsChunkLen').val(chunkLen);
 		hideMode == 1 && $('#option-hidenoise').addClass('active');
 		storageEnabled == 1 && $('#option-localstorage').addClass('active');
+		skipEnabled == 1 && $('#option-enableskipback').addClass('active');
+		$('#optionsSkipBackWords').val(skipbackWords);
 	}).on('hidden', function() {
 		if (eState == STATE.Options) changeState(ePrevState);
 	});
@@ -260,6 +271,8 @@ function saveState() {
 	localStorage["spdChunk"] = chunk;
 	localStorage["spdChunkLen"] = chunkLen;
 	localStorage["hideMode"] = hideMode;
+	localStorage["skipEnabled"] = skipEnabled;
+	localStorage["skipbackWords"] = skipbackWords;
 }
 
 function loadState() {
@@ -274,6 +287,8 @@ function loadState() {
 	(localStorage.getItem("spdChunk") != null) && (chunk = parseInt(localStorage["spdChunk"]));
 	(localStorage.getItem("spdChunkLen") != null) && (chunkLen = parseInt(localStorage["spdChunkLen"]));
 	(localStorage.getItem("hideMode") != null) && (hideMode = parseInt(localStorage["hideMode"]));
+	(localStorage.getItem("skipbackWords") != null) && (skipbackWords = parseInt(localStorage["skipbackWords"]));
+	(localStorage.getItem("skipEnabled") != null) && (skipEnabled = parseInt(localStorage["skipEnabled"]));
 
 	changeWPM(0);
 	changeChunkSize(0);
@@ -291,6 +306,8 @@ function resetOptionsToDefaults() {
 	$('#optionsDelta').val(50);
 	$('#optionsChunkSize').val(3);
 	$('#optionsChunkLen').val(20);
+	$('#optionsSkipBackWords').val(10);
+	// TODO: reset check boxes to default
 }
 
 function hideNoise() {

@@ -11,7 +11,6 @@ The engine is js/SpeederEngine.js. The js/main.js script plugs the engine to the
 
 ## To-do
 
- * Rewind (skip back) text
  * Ability to modify line end characters
  * Reading progress indicator
  * Grab readable content from URL (in addition to copy-pasting)

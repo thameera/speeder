@@ -3,6 +3,7 @@ var EngSTATE = {
 	Reading: 	{value: 1, text: 'Reading'},
 	Paused: 	{value: 2, text: 'Paused'},
 	Finished: 	{value: 3, text: 'Finished'},
+	Intermed: 	{value: 4, text: 'Intermed'}  // Intermediate state. Currently used for rewind.
 };
 
 var Engine = {
@@ -10,6 +11,7 @@ var Engine = {
 	pause:		function() { return EngPause(); },
 	resume:		function() { return EngResume(); },
 	reset:		function() { return EngReset(); },
+	rewind:		function(words) { return EngRewind(words); },
 	getNextChunk:	function() { return EngGetNextChunk(1); },
 	setCallback:	function(callback) { return EngSetCallback(callback); },
 	setText: 	function(text) { return EngSetText(text); },
@@ -64,6 +66,18 @@ function EngResume() {
 function EngReset() {
 	_Timer.stop();
 	_Pos = 0;
+}
+
+function EngRewind(words) {
+	_Pos -= words;
+	if (_Pos < 0)  _Pos = 0;
+
+	// Notify callback
+	if (_State == EngSTATE.Reading) {
+		_Cb(_State, EngGetNextChunk(0));
+	} else {
+		_Cb(EngSTATE.Intermed, EngGetNextChunk(1));
+	}
 }
 
 function EngSetText(text) {

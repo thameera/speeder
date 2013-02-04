@@ -43,6 +43,11 @@ body {
 	width: 200px;
 }
 
+#modalOptions .option.half.check {
+	margin-top: 12px;
+	margin-bottom: -12px;
+}
+
 #modalOptions .option.full {
 	clear: both;
 }

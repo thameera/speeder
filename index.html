@@ -24,7 +24,8 @@
 
 <div class="container" id="content">
 	<div class="row">
-		<div class="span2"></div>
+		<div class="span1 dbg1"></div>
+		<div class="span1 dbg2"></div>
 		<div class="span8">
 			<div id="divCanvas">Load error
 			</div>
@@ -88,6 +89,17 @@
 			<div class="option half">
 				<abbr title="Maximum number of characters per chunk. 0 means no limit.">Max length</abbr>: 
 				<input type="text" class="textinput" id="optionsChunkLen" />
+			</div>
+		</div> <!-- /block -->
+		<div class="block">
+			<div class="title">Skip back</div>
+			<div class="option half check">
+				<div class="btn" id="option-enableskipback" data-toggle="buttons-checkbox"></div>
+				<abbr title="If enabled, you can skip back words by pressing A">Enable with <strong class="label">A</strong></abbr>
+			</div>
+			<div class="option half">
+				<abbr title="Number of words to skip back at a time">Words to skip</abbr>: 
+				<input type="text" class="textinput" id="optionsSkipBackWords" />
 			</div>
 		</div> <!-- /block -->
 		<div class="block">
