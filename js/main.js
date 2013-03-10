@@ -16,6 +16,7 @@ var skipbackWords = 10;
 var skipEnabled = 1;
 var canStore = 0; // 1 if local storage is available
 var storageEnabled = 1; // 0 if local storage is turned off manually
+var darkMode = 0; // 0 if light mode, 1 if dark mode
 var hideMode = 1; // whether the extra divs should be hidden while reading
 var defaultText;
 
@@ -153,6 +154,7 @@ function onChangeOptions() {
   chunkLen = parseInt($('#optionsChunkLen').val()) || 0;
   $('#option-hidenoise').hasClass('active') ? hideMode = 1 : hideMode = 0;
   $('#option-localstorage').hasClass('active') ? setStorageOpts(1) : setStorageOpts(0);
+  $('#option-darkmode').hasClass('active') ? setDarkMode(1) : setDarkMode(0);
   $('#option-enableskipback').hasClass('active') ? skipEnabled = 1 : skipEnabled = 0;
   skipbackWords= parseInt($('#optionsSkipBackWords').val()) || skipbackWords;
   changeChunkSize(0);
@@ -219,6 +221,7 @@ function setupAttributes() {
     $('#optionsChunkLen').val(chunkLen);
     hideMode == 1 && $('#option-hidenoise').addClass('active');
     storageEnabled == 1 && $('#option-localstorage').addClass('active');
+    darkMode == 1 && $('#option-darkmode').addClass('active');
     skipEnabled == 1 && $('#option-enableskipback').addClass('active');
     $('#optionsSkipBackWords').val(skipbackWords);
   }).on('hidden', function() {
@@ -273,6 +276,7 @@ function saveState() {
   localStorage["hideMode"] = hideMode;
   localStorage["skipEnabled"] = skipEnabled;
   localStorage["skipbackWords"] = skipbackWords;
+  localStorage["darkMode"] = darkMode;
 }
 
 function loadState() {
@@ -289,6 +293,7 @@ function loadState() {
   (localStorage.getItem("hideMode") != null) && (hideMode = parseInt(localStorage["hideMode"]));
   (localStorage.getItem("skipbackWords") != null) && (skipbackWords = parseInt(localStorage["skipbackWords"]));
   (localStorage.getItem("skipEnabled") != null) && (skipEnabled = parseInt(localStorage["skipEnabled"]));
+  (localStorage.getItem("darkMode") != null) && (darkMode = parseInt(localStorage["darkMode"]));
 
   changeWPM(0);
   changeChunkSize(0);
@@ -299,6 +304,10 @@ function setStorageOpts(val) {
 
   storageEnabled = val;
   localStorage["storage"] = val;
+}
+
+function setDarkMode(val) {
+  val == 1 ? $('body').addClass('dark') : $('body').removeClass('dark');
 }
 
 function resetOptionsToDefaults() {
