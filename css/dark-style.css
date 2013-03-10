@@ -1,0 +1,8 @@
+body.dark, body.dark .modal {
+  background: #141414;
+  color: #999;
+}
+
+body.dark strong.label {
+  color: #141414;
+}
