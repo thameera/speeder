@@ -233,6 +233,10 @@ function setupAttributes() {
   });
 
   $('#modalOptionsLegend').html(formatLegend("[Ctrl]+[ENTER]: Save_____[D]: Defaults_____[ESC]: Cancel"));
+
+  if (darkMode == 1) {
+    setDarkMode(1);
+  }
 }
 
 function changeState(state) {
@@ -306,8 +310,9 @@ function setStorageOpts(val) {
   localStorage["storage"] = val;
 }
 
-function setDarkMode(val) {
-  val == 1 ? $('body').addClass('dark') : $('body').removeClass('dark');
+function setDarkMode(darkModeVal) {
+  darkModeVal == 1 ? $('body').addClass('dark') : $('body').removeClass('dark');
+  darkMode = darkModeVal;
 }
 
 function resetOptionsToDefaults() {
