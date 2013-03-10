@@ -29,6 +29,7 @@ body {
 #divLegend {
   text-align: center;
   padding-top: 5%;
+  margin-bottom: 1em;
 }
 
 #modalOptions .title {
