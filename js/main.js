@@ -140,23 +140,34 @@ function onNewText() {
   }
 
   if (canStore && storageEnabled) {
-    localStorage["txt"] = txt;
+    localStorage.txt = txt;
   }
   $('#divCanvas').text(Engine.getNextChunk());
 }
 
 function onChangeOptions() {
   // Use the new values, or keep the old values if the new values are null
-  wpm = parseInt($('#optionsWPM').val()) || wpm;
+  wpm = parseInt($('#optionsWPM').val(), 10) || wpm;
   changeWPM(0);
-  wpmdelta = parseInt($('#optionsDelta').val()) || wpmdelta;
-  chunk = parseInt($('#optionsChunkSize').val()) || chunk;
-  chunkLen = parseInt($('#optionsChunkLen').val()) || 0;
-  $('#option-hidenoise').hasClass('active') ? hideMode = 1 : hideMode = 0;
-  $('#option-localstorage').hasClass('active') ? setStorageOpts(1) : setStorageOpts(0);
-  $('#option-darkmode').hasClass('active') ? setDarkMode(1) : setDarkMode(0);
-  $('#option-enableskipback').hasClass('active') ? skipEnabled = 1 : skipEnabled = 0;
-  skipbackWords= parseInt($('#optionsSkipBackWords').val()) || skipbackWords;
+  wpmdelta = parseInt($('#optionsDelta').val(), 10) || wpmdelta;
+  chunk = parseInt($('#optionsChunkSize').val(), 10) || chunk;
+  chunkLen = parseInt($('#optionsChunkLen').val(), 10) || 0;
+  hideMode = $('#option-hidenoise').hasClass('active') ? 1 : 0;
+
+  if ($('#option-localstorage').hasClass('active')) {
+    setStorageOpts(1);
+  } else {
+    setStorageOpts(0);
+  }
+
+  if ($('#option-darkmode').hasClass('active')) {
+    setDarkMode(1);
+  } else {
+    setDarkMode(0);
+  }
+
+  skipEnabled = $('#option-enableskipback').hasClass('active') ? 1 : 0;
+  skipbackWords = parseInt($('#optionsSkipBackWords').val(), 10) || skipbackWords;
   changeChunkSize(0);
   saveState();
 }
@@ -192,8 +203,8 @@ function setupAttributes() {
 
   defaultText = "It was terribly cold and nearly dark on the last evening of the old year, and the snow was falling fast. In the cold and the darkness, a poor little girl, with bare head and naked feet, roamed through the streets. It is true she had on a pair of slippers when she left home, but they were not of much use.";
 
-  if (canStore && storageEnabled && localStorage.getItem("txt") != null) {
-    $('#txtaInput').val(localStorage["txt"]);
+  if (canStore && storageEnabled && localStorage.getItem("txt") !== null) {
+    $('#txtaInput').val(localStorage.txt);
   }
   else {
     $('#txtaInput').val(defaultText);
@@ -211,7 +222,7 @@ function setupAttributes() {
 
   $('#txtaInput').live('input select', function(){
     var wc = $.trim($('#txtaInput').val()).length / 5;
-    $('#modalInputWC').text('That\'s roughly ' + parseInt(wc) + ' words');
+    $('#modalInputWC').text('That\'s roughly ' + parseInt(wc, 10) + ' words');
   });
 
   $('#modalOptions').on('shown', function() {
@@ -219,10 +230,23 @@ function setupAttributes() {
     $('#optionsDelta').val(wpmdelta);
     $('#optionsChunkSize').val(chunk);
     $('#optionsChunkLen').val(chunkLen);
-    hideMode == 1 && $('#option-hidenoise').addClass('active');
-    storageEnabled == 1 && $('#option-localstorage').addClass('active');
-    darkMode == 1 && $('#option-darkmode').addClass('active');
-    skipEnabled == 1 && $('#option-enableskipback').addClass('active');
+
+    if (hideMode == 1) {
+      $('#option-hidenoise').addClass('active');
+    }
+
+    if (storageEnabled == 1) {
+      $('#option-localstorage').addClass('active');
+    }
+
+    if (darkMode == 1) {
+      $('#option-darkmode').addClass('active');
+    }
+
+    if (skipEnabled == 1) {
+      $('#option-enableskipback').addClass('active');
+    }
+
     $('#optionsSkipBackWords').val(skipbackWords);
   }).on('hidden', function() {
     if (eState == STATE.Options) changeState(ePrevState);
@@ -264,7 +288,7 @@ function validateNumber(ev) {
 
 function checkLocalStorageSupport() {
   try {
-    canStore = 'localStorage' in window && window['localStorage'] !== null;
+    canStore = 'localStorage' in window && window.localStorage !== null;
   } catch (e) {
     canStore = 0;
   }
@@ -273,31 +297,56 @@ function checkLocalStorageSupport() {
 function saveState() {
   if (!canStore || !storageEnabled) return;
 
-  localStorage["spdWPM"] = wpm;
-  localStorage["spdDelta"] = wpmdelta;
-  localStorage["spdChunk"] = chunk;
-  localStorage["spdChunkLen"] = chunkLen;
-  localStorage["hideMode"] = hideMode;
-  localStorage["skipEnabled"] = skipEnabled;
-  localStorage["skipbackWords"] = skipbackWords;
-  localStorage["darkMode"] = darkMode;
+  localStorage.spdWPM = wpm;
+  localStorage.spdDelta = wpmdelta;
+  localStorage.spdChunk = chunk;
+  localStorage.spdChunkLen = chunkLen;
+  localStorage.hideMode = hideMode;
+  localStorage.skipEnabled = skipEnabled;
+  localStorage.skipbackWords = skipbackWords;
+  localStorage.darkMode = darkMode;
 }
 
 function loadState() {
   if (!canStore) return;
 
-  (localStorage.getItem("spdWPM") != null) && (storageEnabled = parseInt(localStorage["storage"]));
+  if (localStorage.getItem("spdWPM") !== null) {
+    storageEnabled = parseInt(localStorage.storage, 10);
+  }
 
   if (!storageEnabled) return;
 
-  (localStorage.getItem("spdWPM") != null) && (wpm = parseInt(localStorage["spdWPM"]));
-  (localStorage.getItem("spdDelta") != null) && (wpmdelta = parseInt(localStorage["spdDelta"]));
-  (localStorage.getItem("spdChunk") != null) && (chunk = parseInt(localStorage["spdChunk"]));
-  (localStorage.getItem("spdChunkLen") != null) && (chunkLen = parseInt(localStorage["spdChunkLen"]));
-  (localStorage.getItem("hideMode") != null) && (hideMode = parseInt(localStorage["hideMode"]));
-  (localStorage.getItem("skipbackWords") != null) && (skipbackWords = parseInt(localStorage["skipbackWords"]));
-  (localStorage.getItem("skipEnabled") != null) && (skipEnabled = parseInt(localStorage["skipEnabled"]));
-  (localStorage.getItem("darkMode") != null) && (darkMode = parseInt(localStorage["darkMode"]));
+  if (localStorage.getItem("spdWPM") !== null) {
+    wpm = parseInt(localStorage.spdWPM, 10);
+  }
+
+  if (localStorage.getItem("spdDelta") !== null) {
+    wpmdelta = parseInt(localStorage.spdDelta, 10);
+  }
+
+  if (localStorage.getItem("spdChunk") !== null) {
+    chunk = parseInt(localStorage.spdChunk, 10);
+  }
+
+  if (localStorage.getItem("spdChunkLen") !== null) {
+    chunkLen = parseInt(localStorage.spdChunkLen, 10);
+  }
+
+  if (localStorage.getItem("hideMode") !== null) {
+    hideMode = parseInt(localStorage.hideMode, 10);
+  }
+
+  if (localStorage.getItem("skipbackWords") !== null) {
+    skipbackWords = parseInt(localStorage.skipbackWords, 10);
+  }
+
+  if (localStorage.getItem("skipEnabled") !== null) {
+    skipEnabled = parseInt(localStorage.skipEnabled, 10);
+  }
+
+  if (localStorage.getItem("darkMode") !== null) {
+    darkMode = parseInt(localStorage.darkMode, 10);
+  }
 
   changeWPM(0);
   changeChunkSize(0);
@@ -307,11 +356,16 @@ function setStorageOpts(val) {
   if (!canStore) return;
 
   storageEnabled = val;
-  localStorage["storage"] = val;
+  localStorage.storage = val;
 }
 
 function setDarkMode(darkModeVal) {
-  darkModeVal == 1 ? $('body').addClass('dark') : $('body').removeClass('dark');
+  if (darkModeVal == 1) {
+    $('body').addClass('dark');
+  } else {
+    $('body').removeClass('dark');
+  }
+
   darkMode = darkModeVal;
 }
 

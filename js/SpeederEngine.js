@@ -89,7 +89,7 @@ function EngSetText(text) {
 }
 
 function _EngSetupParams() {
-  if (_Text == null) return;
+  if (_Text === null) return;
 
   var effectiveChars = _Text.length - _WordCount - _Pos;
   _TotalTime = (effectiveChars / _CPM) * 60 * 1000;
@@ -105,7 +105,7 @@ function _EngOnTimer() {
   var offset = 0.0;
   var txt = EngGetNextChunk(0);
 
-  if (txt == "") {
+  if (txt === "") {
     _State = EngSTATE.Finished;
     _Cb(_State, "");
     _Pos = 0;
