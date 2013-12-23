@@ -147,16 +147,16 @@ function onNewText() {
 
 function onChangeOptions() {
   // Use the new values, or keep the old values if the new values are null
-  wpm = parseInt($('#optionsWPM').val()) || wpm;
+  wpm = parseInt($('#optionsWPM').val(), 10) || wpm;
   changeWPM(0);
-  wpmdelta = parseInt($('#optionsDelta').val()) || wpmdelta;
-  chunk = parseInt($('#optionsChunkSize').val()) || chunk;
-  chunkLen = parseInt($('#optionsChunkLen').val()) || 0;
+  wpmdelta = parseInt($('#optionsDelta').val(), 10) || wpmdelta;
+  chunk = parseInt($('#optionsChunkSize').val(), 10) || chunk;
+  chunkLen = parseInt($('#optionsChunkLen').val(), 10) || 0;
   $('#option-hidenoise').hasClass('active') ? hideMode = 1 : hideMode = 0;
   $('#option-localstorage').hasClass('active') ? setStorageOpts(1) : setStorageOpts(0);
   $('#option-darkmode').hasClass('active') ? setDarkMode(1) : setDarkMode(0);
   $('#option-enableskipback').hasClass('active') ? skipEnabled = 1 : skipEnabled = 0;
-  skipbackWords= parseInt($('#optionsSkipBackWords').val()) || skipbackWords;
+  skipbackWords= parseInt($('#optionsSkipBackWords').val(), 10) || skipbackWords;
   changeChunkSize(0);
   saveState();
 }
@@ -211,7 +211,7 @@ function setupAttributes() {
 
   $('#txtaInput').live('input select', function(){
     var wc = $.trim($('#txtaInput').val()).length / 5;
-    $('#modalInputWC').text('That\'s roughly ' + parseInt(wc) + ' words');
+    $('#modalInputWC').text('That\'s roughly ' + parseInt(wc, 10) + ' words');
   });
 
   $('#modalOptions').on('shown', function() {
@@ -286,18 +286,18 @@ function saveState() {
 function loadState() {
   if (!canStore) return;
 
-  (localStorage.getItem("spdWPM") !== null) && (storageEnabled = parseInt(localStorage.storage));
+  (localStorage.getItem("spdWPM") !== null) && (storageEnabled = parseInt(localStorage.storage, 10));
 
   if (!storageEnabled) return;
 
-  (localStorage.getItem("spdWPM") !== null) && (wpm = parseInt(localStorage.spdWPM));
-  (localStorage.getItem("spdDelta") !== null) && (wpmdelta = parseInt(localStorage.spdDelta));
-  (localStorage.getItem("spdChunk") !== null) && (chunk = parseInt(localStorage.spdChunk));
-  (localStorage.getItem("spdChunkLen") !== null) && (chunkLen = parseInt(localStorage.spdChunkLen));
-  (localStorage.getItem("hideMode") !== null) && (hideMode = parseInt(localStorage.hideMode));
-  (localStorage.getItem("skipbackWords") !== null) && (skipbackWords = parseInt(localStorage.skipbackWords));
-  (localStorage.getItem("skipEnabled") !== null) && (skipEnabled = parseInt(localStorage.skipEnabled));
-  (localStorage.getItem("darkMode") !== null) && (darkMode = parseInt(localStorage.darkMode));
+  (localStorage.getItem("spdWPM") !== null) && (wpm = parseInt(localStorage.spdWPM, 10));
+  (localStorage.getItem("spdDelta") !== null) && (wpmdelta = parseInt(localStorage.spdDelta, 10));
+  (localStorage.getItem("spdChunk") !== null) && (chunk = parseInt(localStorage.spdChunk, 10));
+  (localStorage.getItem("spdChunkLen") !== null) && (chunkLen = parseInt(localStorage.spdChunkLen, 10));
+  (localStorage.getItem("hideMode") !== null) && (hideMode = parseInt(localStorage.hideMode, 10));
+  (localStorage.getItem("skipbackWords") !== null) && (skipbackWords = parseInt(localStorage.skipbackWords, 10));
+  (localStorage.getItem("skipEnabled") !== null) && (skipEnabled = parseInt(localStorage.skipEnabled, 10));
+  (localStorage.getItem("darkMode") !== null) && (darkMode = parseInt(localStorage.darkMode, 10));
 
   changeWPM(0);
   changeChunkSize(0);
