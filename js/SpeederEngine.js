@@ -64,6 +64,9 @@ function EngResume() {
 }
 
 function EngReset() {
+  if (!_Timer) {
+    return;
+  }
   _Timer.stop();
   _Pos = 0;
 }
