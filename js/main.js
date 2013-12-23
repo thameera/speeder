@@ -152,11 +152,22 @@ function onChangeOptions() {
   wpmdelta = parseInt($('#optionsDelta').val(), 10) || wpmdelta;
   chunk = parseInt($('#optionsChunkSize').val(), 10) || chunk;
   chunkLen = parseInt($('#optionsChunkLen').val(), 10) || 0;
-  $('#option-hidenoise').hasClass('active') ? hideMode = 1 : hideMode = 0;
-  $('#option-localstorage').hasClass('active') ? setStorageOpts(1) : setStorageOpts(0);
-  $('#option-darkmode').hasClass('active') ? setDarkMode(1) : setDarkMode(0);
-  $('#option-enableskipback').hasClass('active') ? skipEnabled = 1 : skipEnabled = 0;
-  skipbackWords= parseInt($('#optionsSkipBackWords').val(), 10) || skipbackWords;
+  hideMode = $('#option-hidenoise').hasClass('active') ? 1 : 0;
+
+  if ($('#option-localstorage').hasClass('active')) {
+    setStorageOpts(1);
+  } else {
+    setStorageOpts(0);
+  }
+
+  if ($('#option-darkmode').hasClass('active')) {
+    setDarkMode(1);
+  } else {
+    setDarkMode(0);
+  }
+
+  skipEnabled = $('#option-enableskipback').hasClass('active') ? 1 : 0;
+  skipbackWords = parseInt($('#optionsSkipBackWords').val(), 10) || skipbackWords;
   changeChunkSize(0);
   saveState();
 }
@@ -219,10 +230,23 @@ function setupAttributes() {
     $('#optionsDelta').val(wpmdelta);
     $('#optionsChunkSize').val(chunk);
     $('#optionsChunkLen').val(chunkLen);
-    hideMode == 1 && $('#option-hidenoise').addClass('active');
-    storageEnabled == 1 && $('#option-localstorage').addClass('active');
-    darkMode == 1 && $('#option-darkmode').addClass('active');
-    skipEnabled == 1 && $('#option-enableskipback').addClass('active');
+
+    if (hideMode == 1) {
+      $('#option-hidenoise').addClass('active');
+    }
+
+    if (storageEnabled == 1) {
+      $('#option-localstorage').addClass('active');
+    }
+
+    if (darkMode == 1) {
+      $('#option-darkmode').addClass('active');
+    }
+
+    if (skipEnabled == 1) {
+      $('#option-enableskipback').addClass('active');
+    }
+
     $('#optionsSkipBackWords').val(skipbackWords);
   }).on('hidden', function() {
     if (eState == STATE.Options) changeState(ePrevState);
@@ -286,18 +310,43 @@ function saveState() {
 function loadState() {
   if (!canStore) return;
 
-  (localStorage.getItem("spdWPM") !== null) && (storageEnabled = parseInt(localStorage.storage, 10));
+  if (localStorage.getItem("spdWPM") !== null) {
+    storageEnabled = parseInt(localStorage.storage, 10);
+  }
 
   if (!storageEnabled) return;
 
-  (localStorage.getItem("spdWPM") !== null) && (wpm = parseInt(localStorage.spdWPM, 10));
-  (localStorage.getItem("spdDelta") !== null) && (wpmdelta = parseInt(localStorage.spdDelta, 10));
-  (localStorage.getItem("spdChunk") !== null) && (chunk = parseInt(localStorage.spdChunk, 10));
-  (localStorage.getItem("spdChunkLen") !== null) && (chunkLen = parseInt(localStorage.spdChunkLen, 10));
-  (localStorage.getItem("hideMode") !== null) && (hideMode = parseInt(localStorage.hideMode, 10));
-  (localStorage.getItem("skipbackWords") !== null) && (skipbackWords = parseInt(localStorage.skipbackWords, 10));
-  (localStorage.getItem("skipEnabled") !== null) && (skipEnabled = parseInt(localStorage.skipEnabled, 10));
-  (localStorage.getItem("darkMode") !== null) && (darkMode = parseInt(localStorage.darkMode, 10));
+  if (localStorage.getItem("spdWPM") !== null) {
+    wpm = parseInt(localStorage.spdWPM, 10);
+  }
+
+  if (localStorage.getItem("spdDelta") !== null) {
+    wpmdelta = parseInt(localStorage.spdDelta, 10);
+  }
+
+  if (localStorage.getItem("spdChunk") !== null) {
+    chunk = parseInt(localStorage.spdChunk, 10);
+  }
+
+  if (localStorage.getItem("spdChunkLen") !== null) {
+    chunkLen = parseInt(localStorage.spdChunkLen, 10);
+  }
+
+  if (localStorage.getItem("hideMode") !== null) {
+    hideMode = parseInt(localStorage.hideMode, 10);
+  }
+
+  if (localStorage.getItem("skipbackWords") !== null) {
+    skipbackWords = parseInt(localStorage.skipbackWords, 10);
+  }
+
+  if (localStorage.getItem("skipEnabled") !== null) {
+    skipEnabled = parseInt(localStorage.skipEnabled, 10);
+  }
+
+  if (localStorage.getItem("darkMode") !== null) {
+    darkMode = parseInt(localStorage.darkMode, 10);
+  }
 
   changeWPM(0);
   changeChunkSize(0);
@@ -311,7 +360,12 @@ function setStorageOpts(val) {
 }
 
 function setDarkMode(darkModeVal) {
-  darkModeVal == 1 ? $('body').addClass('dark') : $('body').removeClass('dark');
+  if (darkModeVal == 1) {
+    $('body').addClass('dark');
+  } else {
+    $('body').removeClass('dark');
+  }
+
   darkMode = darkModeVal;
 }
 
