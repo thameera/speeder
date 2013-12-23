@@ -140,7 +140,7 @@ function onNewText() {
   }
 
   if (canStore && storageEnabled) {
-    localStorage["txt"] = txt;
+    localStorage.txt = txt;
   }
   $('#divCanvas').text(Engine.getNextChunk());
 }
@@ -193,7 +193,7 @@ function setupAttributes() {
   defaultText = "It was terribly cold and nearly dark on the last evening of the old year, and the snow was falling fast. In the cold and the darkness, a poor little girl, with bare head and naked feet, roamed through the streets. It is true she had on a pair of slippers when she left home, but they were not of much use.";
 
   if (canStore && storageEnabled && localStorage.getItem("txt") != null) {
-    $('#txtaInput').val(localStorage["txt"]);
+    $('#txtaInput').val(localStorage.txt);
   }
   else {
     $('#txtaInput').val(defaultText);
@@ -264,7 +264,7 @@ function validateNumber(ev) {
 
 function checkLocalStorageSupport() {
   try {
-    canStore = 'localStorage' in window && window['localStorage'] !== null;
+    canStore = 'localStorage' in window && window.localStorage !== null;
   } catch (e) {
     canStore = 0;
   }
@@ -273,31 +273,31 @@ function checkLocalStorageSupport() {
 function saveState() {
   if (!canStore || !storageEnabled) return;
 
-  localStorage["spdWPM"] = wpm;
-  localStorage["spdDelta"] = wpmdelta;
-  localStorage["spdChunk"] = chunk;
-  localStorage["spdChunkLen"] = chunkLen;
-  localStorage["hideMode"] = hideMode;
-  localStorage["skipEnabled"] = skipEnabled;
-  localStorage["skipbackWords"] = skipbackWords;
-  localStorage["darkMode"] = darkMode;
+  localStorage.spdWPM = wpm;
+  localStorage.spdDelta = wpmdelta;
+  localStorage.spdChunk = chunk;
+  localStorage.spdChunkLen = chunkLen;
+  localStorage.hideMode = hideMode;
+  localStorage.skipEnabled = skipEnabled;
+  localStorage.skipbackWords = skipbackWords;
+  localStorage.darkMode = darkMode;
 }
 
 function loadState() {
   if (!canStore) return;
 
-  (localStorage.getItem("spdWPM") != null) && (storageEnabled = parseInt(localStorage["storage"]));
+  (localStorage.getItem("spdWPM") != null) && (storageEnabled = parseInt(localStorage.storage));
 
   if (!storageEnabled) return;
 
-  (localStorage.getItem("spdWPM") != null) && (wpm = parseInt(localStorage["spdWPM"]));
-  (localStorage.getItem("spdDelta") != null) && (wpmdelta = parseInt(localStorage["spdDelta"]));
-  (localStorage.getItem("spdChunk") != null) && (chunk = parseInt(localStorage["spdChunk"]));
-  (localStorage.getItem("spdChunkLen") != null) && (chunkLen = parseInt(localStorage["spdChunkLen"]));
-  (localStorage.getItem("hideMode") != null) && (hideMode = parseInt(localStorage["hideMode"]));
-  (localStorage.getItem("skipbackWords") != null) && (skipbackWords = parseInt(localStorage["skipbackWords"]));
-  (localStorage.getItem("skipEnabled") != null) && (skipEnabled = parseInt(localStorage["skipEnabled"]));
-  (localStorage.getItem("darkMode") != null) && (darkMode = parseInt(localStorage["darkMode"]));
+  (localStorage.getItem("spdWPM") != null) && (wpm = parseInt(localStorage.spdWPM));
+  (localStorage.getItem("spdDelta") != null) && (wpmdelta = parseInt(localStorage.spdDelta));
+  (localStorage.getItem("spdChunk") != null) && (chunk = parseInt(localStorage.spdChunk));
+  (localStorage.getItem("spdChunkLen") != null) && (chunkLen = parseInt(localStorage.spdChunkLen));
+  (localStorage.getItem("hideMode") != null) && (hideMode = parseInt(localStorage.hideMode));
+  (localStorage.getItem("skipbackWords") != null) && (skipbackWords = parseInt(localStorage.skipbackWords));
+  (localStorage.getItem("skipEnabled") != null) && (skipEnabled = parseInt(localStorage.skipEnabled));
+  (localStorage.getItem("darkMode") != null) && (darkMode = parseInt(localStorage.darkMode));
 
   changeWPM(0);
   changeChunkSize(0);
@@ -307,7 +307,7 @@ function setStorageOpts(val) {
   if (!canStore) return;
 
   storageEnabled = val;
-  localStorage["storage"] = val;
+  localStorage.storage = val;
 }
 
 function setDarkMode(darkModeVal) {
