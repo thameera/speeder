@@ -1,130 +1,133 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <title>Speeder!</title>
-  <link rel="shortcut icon" type="image/png" href="img/speeder.png" />
-  <link href="css/style.css" rel="stylesheet" type="text/css">
-  <link href="css/dark-style.css" rel="stylesheet" type="text/css">
-  <link href="css/bootstrap.css" rel="stylesheet" type="text/css">
-  <link href="css/bootstrap-responsive.css" rel="stylesheet" type="text/css">
-  <script src="js/jquery.js"></script>
-  <script src="js/jquery.timer.js"></script>
-  <script src="js/SpeederEngine.js"></script>
-  <script src="js/main.js"></script>
-  <script src="js/bootstrap.min.js"></script>
-</head>
+  <head>
+    <title>Speeder!</title>
+    <link rel="shortcut icon" type="image/png" href="img/speeder.png" />
+    <link href="css/style.css" rel="stylesheet" type="text/css">
+    <link href="css/dark-style.css" rel="stylesheet" type="text/css">
+    <link href="css/bootstrap.css" rel="stylesheet" type="text/css">
+    <link href="css/bootstrap-responsive.css" rel="stylesheet" type="text/css">
+  </head>
 
-<body>
+  <body>
 
-<style type="text/css">
-  #forkongithub a {background:#000;color:#fff;text-decoration:none;font-family:Helvetica, Verdana, sans-serif;text-align:center;font-weight:bold;padding:5px 40px;font-size:1rem;line-height:1rem;position:relative;transition:0.5s;}
-  #forkongithub a:hover {background:#222;color:#fff;}
-  #forkongithub a::before,
-  #forkongithub a::after {content:'';width:100%;display:block;position:absolute;top:1px;left:0;height:1px;background:#fff;}
-  #forkongithub a::after {bottom:1px;top:auto;}@media screen and (min-width: 800px){#forkongithub{position:absolute;display:block;top:0;left:0;width:200px;overflow:hidden;height:200px;}
-    #forkongithub a {width:200px;position:absolute;top:60px;left:-60px;transform:rotate(-45deg);-webkit-transform:rotate(-45deg);box-shadow:4px 4px 10px rgba(0,0,0,0.8);}}</style><span id="forkongithub"><a href="https://github.com/thameera/speeder" target="_blank">Fork me on Github</a></span>
+    <style type="text/css">
+      #forkongithub a {background:#000;color:#fff;text-decoration:none;font-family:Helvetica, Verdana, sans-serif;text-align:center;font-weight:bold;padding:5px 40px;font-size:1rem;line-height:1rem;position:relative;transition:0.5s;}
+      #forkongithub a:hover {background:#222;color:#fff;}
+      #forkongithub a::before,
+      #forkongithub a::after {content:'';width:100%;display:block;position:absolute;top:1px;left:0;height:1px;background:#fff;}
+      #forkongithub a::after {bottom:1px;top:auto;}@media screen and (min-width: 800px){#forkongithub{position:absolute;display:block;top:0;left:0;width:200px;overflow:hidden;height:200px;}
+        #forkongithub a {width:200px;position:absolute;top:60px;left:-60px;transform:rotate(-45deg);-webkit-transform:rotate(-45deg);box-shadow:4px 4px 10px rgba(0,0,0,0.8);}}
+    </style>
+    <span id="forkongithub"><a href="https://github.com/thameera/speeder" target="_blank">Fork me on Github</a></span>
 
-<div class="container" id="content">
-  <div class="row">
-    <div class="span1 dbg1"></div>
-    <div class="span1 dbg2"></div>
-    <div class="span8">
-      <div id="divCanvas">Load error
+    <div class="container" id="content">
+      <div class="row">
+        <div class="span1 dbg1"></div>
+        <div class="span1 dbg2"></div>
+        <div class="span8">
+          <div id="divCanvas">Load error
+          </div>
+        </div>
       </div>
-    </div>
-  </div>
-  <div class="row rowInfo">
-    <div class="span5"></div>
-    <div class="span1">
-      <div class="divTitle">WPM</div>
-      <div id="divWPM"></div>
-    </div>
-    <div class="span1">
-      <div class="divTitle">Chunk</div>
-      <div id="divChunk"></div>
-    </div>
-  </div>
-  <div class="row rowLegend">
-    <div class="span2"></div>
-    <div class="span8" id="divLegend">
-    </div>
-  </div>
-</div> <!-- /container -->
+      <div class="row rowInfo">
+        <div class="span5"></div>
+        <div class="span1">
+          <div class="divTitle">WPM</div>
+          <div id="divWPM"></div>
+        </div>
+        <div class="span1">
+          <div class="divTitle">Chunk</div>
+          <div id="divChunk"></div>
+        </div>
+      </div>
+      <div class="row rowLegend">
+        <div class="span2"></div>
+        <div class="span8" id="divLegend">
+        </div>
+      </div>
+    </div> <!-- /container -->
 
-<div id="modalInput" class="modal hide fade" tabindex=-1 role="dialog" aria-labelledby="mdlInputHeader" aria-hidden="true">
-  <div class="modal-header">
-    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
-    <h3 id="mdlInputHeader">Paste the text here:</h3>
-  </div>
-  <div class="modal-body">
-    <textarea class="input-xlarge" id="txtaInput" rows="15"></textarea>
-    <div id="modalInputWC"></div>
-  </div>
-  <div class="modal-footer" style="text-align: center">
-    <div id="modalInputLegend"></div>
-  </div>
-</div> <!-- /modalInput  -->
+    <div id="modalInput" class="modal hide fade" tabindex=-1 role="dialog" aria-labelledby="mdlInputHeader" aria-hidden="true">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
+        <h3 id="mdlInputHeader">Paste the text here:</h3>
+      </div>
+      <div class="modal-body">
+        <textarea class="input-xlarge" id="txtaInput" rows="15"></textarea>
+        <div id="modalInputWC"></div>
+      </div>
+      <div class="modal-footer" style="text-align: center">
+        <div id="modalInputLegend"></div>
+      </div>
+    </div> <!-- /modalInput  -->
 
-<div id="modalOptions" class="modal hide fade" tabindex=-1 role="dialog" aria-labelledby="mdlOptionsHeader" aria-hidden="true">
-  <div class="modal-header">
-    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
-    <h3 id="mdlOptionsHeader">Options</h3>
-  </div>
-  <div class="modal-body">
-    <div class="block">
-      <div class="title">Speed</div>
-      <div class="option half">
-        <abbr title="Words per Minute">WPM</abbr>:
-        <input type="text" class="textinput" id="optionsWPM" />
+    <div id="modalOptions" class="modal hide fade" tabindex=-1 role="dialog" aria-labelledby="mdlOptionsHeader" aria-hidden="true">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
+        <h3 id="mdlOptionsHeader">Options</h3>
       </div>
-      <div class="option half">
-        <abbr title="By how much WPM is changed when you press J/F">Delta</abbr>:
-        <input type="text" class="textinput" id="optionsDelta" />
+      <div class="modal-body">
+        <div class="block">
+          <div class="title">Speed</div>
+          <div class="option half">
+            <abbr title="Words per Minute">WPM</abbr>:
+            <input type="text" class="textinput" id="optionsWPM" />
+          </div>
+          <div class="option half">
+            <abbr title="By how much WPM is changed when you press J/F">Delta</abbr>:
+            <input type="text" class="textinput" id="optionsDelta" />
+          </div>
+        </div> <!-- /block -->
+        <div class="block">
+          <div class="title">Chunk</div>
+          <div class="option half">
+            <abbr title="Words per chunk">Size</abbr>:
+            <input type="text" class="textinput" id="optionsChunkSize" />
+          </div>
+          <div class="option half">
+            <abbr title="Maximum number of characters per chunk. 0 means no limit.">Max length</abbr>:
+            <input type="text" class="textinput" id="optionsChunkLen" />
+          </div>
+        </div> <!-- /block -->
+        <div class="block">
+          <div class="title">Skip back</div>
+          <div class="option half check">
+            <div class="btn" id="option-enableskipback" data-toggle="buttons-checkbox"></div>
+            <abbr title="If enabled, you can skip back words by pressing A">Enable with <strong class="label">A</strong></abbr>
+          </div>
+          <div class="option half">
+            <abbr title="Number of words to skip back at a time">Words to skip</abbr>:
+            <input type="text" class="textinput" id="optionsSkipBackWords" />
+          </div>
+        </div> <!-- /block -->
+        <div class="block">
+          <div class="title">Misc</div>
+          <div class="option full">
+            <div class="btn" id="option-hidenoise" data-toggle="buttons-checkbox"></div>
+            Hide everything else while reading
+          </div>
+          <div class="option full">
+            <div class="btn" id="option-localstorage" data-toggle="buttons-checkbox"></div>
+            Save text and options in local storage
+          </div>
+          <div class="option full">
+            <div class="btn" id="option-darkmode" data-toggle="buttons-checkbox"></div>
+            Dark mode
+          </div>
+        </div> <!-- /block -->
+      </div> <!-- /modal-body -->
+      <div class="modal-footer" style="text-align: center">
+        <div id="modalOptionsLegend"></div>
       </div>
-    </div> <!-- /block -->
-    <div class="block">
-      <div class="title">Chunk</div>
-      <div class="option half">
-        <abbr title="Words per chunk">Size</abbr>:
-        <input type="text" class="textinput" id="optionsChunkSize" />
-      </div>
-      <div class="option half">
-        <abbr title="Maximum number of characters per chunk. 0 means no limit.">Max length</abbr>:
-        <input type="text" class="textinput" id="optionsChunkLen" />
-      </div>
-    </div> <!-- /block -->
-    <div class="block">
-      <div class="title">Skip back</div>
-      <div class="option half check">
-        <div class="btn" id="option-enableskipback" data-toggle="buttons-checkbox"></div>
-        <abbr title="If enabled, you can skip back words by pressing A">Enable with <strong class="label">A</strong></abbr>
-      </div>
-      <div class="option half">
-        <abbr title="Number of words to skip back at a time">Words to skip</abbr>:
-        <input type="text" class="textinput" id="optionsSkipBackWords" />
-      </div>
-    </div> <!-- /block -->
-    <div class="block">
-      <div class="title">Misc</div>
-      <div class="option full">
-        <div class="btn" id="option-hidenoise" data-toggle="buttons-checkbox"></div>
-        Hide everything else while reading
-      </div>
-      <div class="option full">
-        <div class="btn" id="option-localstorage" data-toggle="buttons-checkbox"></div>
-        Save text and options in local storage
-      </div>
-      <div class="option full">
-        <div class="btn" id="option-darkmode" data-toggle="buttons-checkbox"></div>
-        Dark mode
-      </div>
-    </div> <!-- /block -->
-  </div> <!-- /modal-body -->
-  <div class="modal-footer" style="text-align: center">
-    <div id="modalOptionsLegend"></div>
-  </div>
-</div> <!-- /modalOptions  -->
+    </div> <!-- /modalOptions  -->
 
-</body>
+    <script src="js/jquery.js"></script>
+    <script src="js/jquery.timer.js"></script>
+    <script src="js/SpeederEngine.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+
+  </body>
 </html>
 
