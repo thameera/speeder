@@ -225,7 +225,7 @@ function setupAttributes() {
 
   $('#modalInputLegend').html(formatLegend("[Ctrl]+[ENTER]: Use this text_____[ESC]: Cancel"));
 
-  $('#txtaInput').on('input select change', function(){
+  $('#txtaInput').on('input select', function(){
     var wc = $.trim($('#txtaInput').val()).length / 5;
     $('#modalInputWC').text('That\'s roughly ' + parseInt(wc, 10) + ' words');
   });
@@ -285,7 +285,7 @@ function changeTextWithFile (filePath) {
       };
       
       var ext = filePath.files[0].name.split('.').pop();
-      if (ext !== 'txt') {
+      if ($.inArray(ext, filesSupported)) {
         alert('Unsupported file');
         $('#mdlFileUpload').val('');
         return;
