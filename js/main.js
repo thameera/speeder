@@ -19,6 +19,7 @@ var storageEnabled = 1; // 0 if local storage is turned off manually
 var darkMode = 0; // 0 if light mode, 1 if dark mode
 var hideMode = 1; // whether the extra divs should be hidden while reading
 var defaultText;
+var filesSupported = ['txt']; // more can be added here, if it works
 
 var eState = STATE.Empty;
 var ePrevState = STATE.Empty;
@@ -211,11 +212,15 @@ function setupAttributes() {
   }
 
   var mod = $('#modalInput');
+  var mdlFileUpload = $('#mdlFileUpload');
 
   mod.on('shown', function() {
     $('#txtaInput').val(txt).select().focus();
+    // add event listener for input file
+    mdlFileUpload.on('change', function() { changeTextWithFile(this) });
   }).on('hidden', function() {
     if (eState == STATE.NewModal) changeState(ePrevState);
+    mdlFileUpload.val(''); // clear file
   });
 
   $('#modalInputLegend').html(formatLegend("[Ctrl]+[ENTER]: Use this text_____[ESC]: Cancel"));
@@ -260,6 +265,46 @@ function setupAttributes() {
 
   if (darkMode == 1) {
     setDarkMode(1);
+  }
+}
+
+function changeTextWithFile (filePath) {
+  var reader = (function() {
+    if (window.File && window.FileReader && window.Blob) {
+      return new FileReader();
+    } else { // API not supported
+      return false;
+    }
+  }());
+
+  var output = ""; 
+  if(filePath.files && filePath.files[0]) {           
+      reader.onload = function (e) {
+          output = e.target.result;
+          $.trim($('#txtaInput').val(output).focus());
+      };
+      
+      var ext = filePath.files[0].name.split('.').pop();
+      if ($.inArray(ext, filesSupported)) {
+        alert('Unsupported file');
+        $('#mdlFileUpload').val('');
+        return;
+      }
+      reader.readAsText(filePath.files[0]);
+  } else if(ActiveXObject && filePath) { //fallback to IE 6-8 support via ActiveX
+      try {
+          reader = new ActiveXObject("Scripting.FileSystemObject");
+          var file = reader.OpenTextFile(filePath, 1); //ActiveX File Object
+          output = file.ReadAll(); //text contents of file
+          file.Close(); //close file "input stream"
+          $.trim($('#txtaInput').val(output).focus());
+      } catch (e) {
+          if (e.number == -2146827859) {
+              alert('Unable to access local files due to browser security settings. ' + 
+               'To overcome this, go to Tools->Internet Options->Security->Custom Level. ' + 
+               'Find the setting for "Initialize and script ActiveX controls not marked as safe" and change it to "Enable" or "Prompt"'); 
+          }
+      }       
   }
 }
 
