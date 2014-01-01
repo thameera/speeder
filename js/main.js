@@ -225,8 +225,8 @@ function setupAttributes() {
 
   $('#modalInputLegend').html(formatLegend("[Ctrl]+[ENTER]: Use this text_____[ESC]: Cancel"));
 
-  $('#txtaInput').on('input select', function(){
-    var wc = $.trim($('#txtaInput').val()).length / 5;
+  $('#txtaInput').on('input select focus', function(){
+    var wc = ($('#txtaInput').val().split(/\s+/).length -1);
     $('#modalInputWC').text('That\'s roughly ' + parseInt(wc, 10) + ' words');
   });
 
