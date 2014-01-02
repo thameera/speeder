@@ -84,8 +84,8 @@ function EngRewind(words) {
 }
 
 function EngSetText(text) {
-  _Text = text.replace(/\n+/g, _paraBreak);
-  _WordsArray = _Text.split(/\s+/);
+  _Text = text.replace(/^\s*\n/gm, _paraBreak);
+  _WordsArray = _Text.split(/\s|\n/);
   _WordCount = _WordsArray.length;
   _Pos = 0;
   return _WordCount;
